@@ -661,7 +661,8 @@ img { max-width: 100%; display: block; }
 /* ---- RESPONSIVE ---- */
 @media (max-width: 1024px) {
   .hero { grid-template-columns: 1fr; padding: 120px 40px 80px; text-align: center; }
-  .hero-visual { display: none; }
+  .hero-visual { display: flex; order: -1; margin-bottom: 8px; }
+  .avatar-frame { width: 220px; height: 220px; }
   .scroll-indicator { left: 40px; }
   .hero-actions, .hero-roles { justify-content: center; }
   .hero-stats { justify-content: center; }
