@@ -433,70 +433,105 @@
     <div class="container">
       <div class="section-label">Credentials</div>
       <h2 class="section-title" data-reveal>Certificates & <em>Achievements</em></h2>
-      <div class="certs-grid">
-        <div class="cert-card" data-reveal>
-          <div class="cert-icon">
-            <svg viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="28" stroke="url(#g1)" stroke-width="2"/>
-              <path d="M22 32l8 8 12-16" stroke="url(#g1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <defs>
-                <linearGradient id="g1" x1="4" y1="4" x2="60" y2="60">
-                  <stop stop-color="#f59e0b"/>
-                  <stop offset="1" stop-color="#ef4444"/>
-                </linearGradient>
-              </defs>
-            </svg>
+      <div class="certs-layout">
+
+        <!-- Real certificate image -->
+        <div class="cert-showcase" data-reveal>
+          <div class="cert-frame" id="certFrame" title="Click to view full certificate">
+            <div class="cert-frame-corner tl"></div>
+            <div class="cert-frame-corner tr"></div>
+            <div class="cert-frame-corner bl"></div>
+            <div class="cert-frame-corner br"></div>
+            <img src="photo_2026-10-15_22-25-58.jpg" alt="Certificate of Competency — Photography & Videography Level 2" />
+            <div class="cert-zoom-hint">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              Click to view
+            </div>
           </div>
-          <div class="cert-body">
-            <span class="cert-issuer">Professional Certification</span>
-            <h3>Video Editing</h3>
-            <p>Certified proficiency in professional video editing workflows, post-production pipelines, and cinematic storytelling techniques.</p>
+          <div class="cert-frame-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Official Certificate — City Gov. of Addis Ababa
           </div>
-          <div class="cert-badge">Verified</div>
         </div>
-        <div class="cert-card" data-reveal>
-          <div class="cert-icon">
-            <svg viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="28" stroke="url(#g2)" stroke-width="2"/>
-              <path d="M22 32l8 8 12-16" stroke="url(#g2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <defs>
-                <linearGradient id="g2" x1="4" y1="4" x2="60" y2="60">
-                  <stop stop-color="#8b5cf6"/>
-                  <stop offset="1" stop-color="#3b82f6"/>
-                </linearGradient>
-              </defs>
-            </svg>
+
+        <!-- Info cards -->
+        <div class="certs-info-col">
+          <div class="cert-card" data-reveal>
+            <div class="cert-icon">
+              <svg viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="28" stroke="url(#g1)" stroke-width="2"/>
+                <path d="M22 32l8 8 12-16" stroke="url(#g1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="g1" x1="4" y1="4" x2="60" y2="60">
+                    <stop stop-color="#f59e0b"/>
+                    <stop offset="1" stop-color="#ef4444"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div class="cert-body">
+              <span class="cert-issuer">City Gov. of Addis Ababa · Aug 2026</span>
+              <h3>Photography & Videography</h3>
+              <p>Certificate of Competency — Level 2. Covers light & sound, studio setup, camera operation, film directing, manual shooting, and video/photo editing.</p>
+              <div class="cert-meta-row">
+                <span class="cert-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Aug 22, 2026
+                </span>
+                <span class="cert-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Code: 271355
+                </span>
+              </div>
+            </div>
+            <div class="cert-badge">Verified</div>
           </div>
-          <div class="cert-body">
-            <span class="cert-issuer">Professional Certification</span>
-            <h3>Graphic Design</h3>
-            <p>Certified in visual communication, brand identity, typography, layout design, and the Adobe Creative Suite ecosystem.</p>
+
+          <div class="cert-card" data-reveal>
+            <div class="cert-icon">
+              <svg viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="28" stroke="url(#g3)" stroke-width="2"/>
+                <path d="M32 20v8l6 3" stroke="url(#g3)" stroke-width="2.5" stroke-linecap="round"/>
+                <defs>
+                  <linearGradient id="g3" x1="4" y1="4" x2="60" y2="60">
+                    <stop stop-color="#10b981"/>
+                    <stop offset="1" stop-color="#06b6d4"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div class="cert-body">
+              <span class="cert-issuer">Track Record · 2024 – Present</span>
+              <h3>2+ Years Experience</h3>
+              <p>Consistent delivery across commercial, social media, and brand film projects — working with brands, creators, and businesses across Ethiopia and beyond.</p>
+              <div class="cert-skill-pills">
+                <span>Video Editing</span>
+                <span>Motion Graphics</span>
+                <span>Color Grading</span>
+                <span>Graphic Design</span>
+              </div>
+            </div>
+            <div class="cert-badge cert-badge--green">Active</div>
           </div>
-          <div class="cert-badge">Verified</div>
         </div>
-        <div class="cert-card" data-reveal>
-          <div class="cert-icon">
-            <svg viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="28" stroke="url(#g3)" stroke-width="2"/>
-              <path d="M32 20v8l6 3" stroke="url(#g3)" stroke-width="2.5" stroke-linecap="round"/>
-              <defs>
-                <linearGradient id="g3" x1="4" y1="4" x2="60" y2="60">
-                  <stop stop-color="#10b981"/>
-                  <stop offset="1" stop-color="#06b6d4"/>
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
-          <div class="cert-body">
-            <span class="cert-issuer">Track Record</span>
-            <h3>2+ Years Experience</h3>
-            <p>Consistent delivery of high-quality projects for brands, creators, and businesses across commercial, social, and brand film verticals.</p>
-          </div>
-          <div class="cert-badge">Active</div>
-        </div>
+
       </div>
     </div>
   </section>
+
+  <!-- CERTIFICATE LIGHTBOX -->
+  <div class="cert-lightbox" id="certLightbox">
+    <div class="cert-lightbox-backdrop" id="certBackdrop"></div>
+    <div class="cert-lightbox-inner">
+      <button class="cert-lightbox-close" id="certClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <img src="photo_2026-10-15_22-25-58.jpg" alt="Certificate of Competency" />
+      <div class="cert-lightbox-caption">
+        Certificate of Competency — Photography & Videography Level 2 · City Government of Addis Ababa
+      </div>
+    </div>
+  </div>
 
   <!-- TESTIMONIALS -->
   <section class="testimonials section" id="testimonials">

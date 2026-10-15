@@ -227,4 +227,24 @@ document.addEventListener('DOMContentLoaded', () => {
     roles[roleIdx].classList.add('active');
   }, 2500);
 
+  // ---- CERTIFICATE LIGHTBOX ----
+  const certFrame    = document.getElementById('certFrame');
+  const certLightbox = document.getElementById('certLightbox');
+  const certClose    = document.getElementById('certClose');
+  const certBackdrop = document.getElementById('certBackdrop');
+
+  function openLightbox() {
+    certLightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    certLightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  certFrame?.addEventListener('click', openLightbox);
+  certClose?.addEventListener('click', closeLightbox);
+  certBackdrop?.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
 });
