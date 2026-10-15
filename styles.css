@@ -676,6 +676,7 @@ img { max-width: 100%; display: block; }
   .nav-links, .nav-cta { display: none; }
   .hamburger { display: flex; }
   .hero { padding: 100px 24px 60px; }
+  .avatar-frame { width: 180px; height: 180px; }
   .section { padding: 72px 0; }
   .projects-grid { grid-template-columns: 1fr; }
   .project-card--wide { grid-column: span 1; }
