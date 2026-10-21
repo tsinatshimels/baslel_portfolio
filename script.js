@@ -127,16 +127,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       projectCards.forEach(card => {
         const match = filter === 'all' || card.dataset.category === filter;
-        card.style.opacity    = '0';
-        card.style.transform  = 'scale(0.95)';
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.95)';
         card.style.pointerEvents = 'none';
         setTimeout(() => {
           card.style.display = match ? '' : 'none';
           if (match) {
             requestAnimationFrame(() => {
               card.style.transition = 'opacity 0.4s, transform 0.4s';
-              card.style.opacity    = '1';
-              card.style.transform  = '';
+              card.style.opacity = '1';
+              card.style.transform = '';
               card.style.pointerEvents = '';
             });
           }
@@ -144,6 +144,37 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+
+  // ---- YOUTUBE MODAL ----
+  const ytModal    = document.getElementById('ytModal');
+  const ytIframe   = document.getElementById('ytIframe');
+  const ytTitle    = document.getElementById('ytTitle');
+  const ytClose    = document.getElementById('ytClose');
+  const ytBackdrop = document.getElementById('ytBackdrop');
+  const ytOpenLink = document.getElementById('ytOpenLink');
+
+  function openYtModal(videoId, title) {
+    ytIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+    ytTitle.textContent = title;
+    ytOpenLink.href = `https://youtu.be/${videoId}`;
+    ytModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeYtModal() {
+    ytIframe.src = '';
+    ytModal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  projectCards.forEach(card => {
+    if (card.dataset.yt) {
+      card.addEventListener('click', () => openYtModal(card.dataset.yt, card.dataset.title));
+    }
+  });
+
+  ytClose?.addEventListener('click', closeYtModal);
+  ytBackdrop?.addEventListener('click', closeYtModal);
 
   // ---- TESTIMONIAL SLIDER ----
   const cards = document.querySelectorAll('.testimonial-card');
@@ -245,6 +276,79 @@ document.addEventListener('DOMContentLoaded', () => {
   certFrame?.addEventListener('click', openLightbox);
   certClose?.addEventListener('click', closeLightbox);
   certBackdrop?.addEventListener('click', closeLightbox);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeLightbox(); closeGlb(); closeYtModal(); }
+  });
+
+  // ---- GRAPHICS LIGHTBOX ----
+  const glb         = document.getElementById('glb');
+  const glbImg      = document.getElementById('glbImg');
+  const glbCounter  = document.getElementById('glbCounter');
+  const glbClose    = document.getElementById('glbClose');
+  const glbBackdrop = document.getElementById('glbBackdrop');
+  const glbPrev     = document.getElementById('glbPrev');
+  const glbNext     = document.getElementById('glbNext');
+  const graphicItems = Array.from(document.querySelectorAll('.graphic-item'));
+  let glbIndex = 0;
+
+  function openGlb(idx) {
+    glbIndex = idx;
+    updateGlb();
+    glb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGlb() {
+    glb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function updateGlb() {
+    const item = graphicItems[glbIndex];
+    const img  = item.querySelector('img');
+    glbImg.style.opacity = '0';
+    setTimeout(() => {
+      glbImg.src = img.src;
+      glbImg.alt = img.alt;
+      glbImg.style.opacity = '1';
+    }, 150);
+    glbCounter.textContent = (glbIndex + 1) + ' / ' + graphicItems.length;
+  }
+
+  graphicItems.forEach(item => {
+    item.addEventListener('click', () => openGlb(parseInt(item.dataset.index, 10)));
+  });
+
+  glbClose?.addEventListener('click', closeGlb);
+  glbBackdrop?.addEventListener('click', closeGlb);
+
+  glbPrev?.addEventListener('click', () => {
+    glbIndex = (glbIndex - 1 + graphicItems.length) % graphicItems.length;
+    updateGlb();
+  });
+  glbNext?.addEventListener('click', () => {
+    glbIndex = (glbIndex + 1) % graphicItems.length;
+    updateGlb();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!glb.classList.contains('open')) return;
+    if (e.key === 'ArrowLeft')  { glbIndex = (glbIndex - 1 + graphicItems.length) % graphicItems.length; updateGlb(); }
+    if (e.key === 'ArrowRight') { glbIndex = (glbIndex + 1) % graphicItems.length; updateGlb(); }
+  });
+
+  // extend cursor hover to graphic items
+  document.querySelectorAll('.graphic-item, .graphic-zoom').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+      follower.style.transform = 'translate(-50%,-50%) scale(1.5)';
+      follower.style.borderColor = 'rgba(245,158,11,0.8)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      follower.style.transform = 'translate(-50%,-50%) scale(1)';
+      follower.style.borderColor = 'rgba(245,158,11,0.4)';
+    });
+  });
 
 });
