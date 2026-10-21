@@ -176,6 +176,34 @@ document.addEventListener('DOMContentLoaded', () => {
   ytClose?.addEventListener('click', closeYtModal);
   ytBackdrop?.addEventListener('click', closeYtModal);
 
+  // ---- STATIC IMAGE CARDS (Film Timelines etc.) ----
+  document.querySelectorAll('.project-card[data-img]').forEach(card => {
+    // clicking the card (but not a strip thumbnail) opens the gallery
+    card.addEventListener('click', e => {
+      if (e.target.closest('.tl-strip-item')) return; // handled separately
+      const gallery = card.dataset.gallery;
+      const title   = card.dataset.title || '';
+      if (gallery) {
+        const images = gallery.split(',').map(s => ({ src: s.trim(), alt: title }));
+        openGlbGallery(images, 0);
+      } else {
+        openGlbGallery([{ src: card.dataset.img, alt: title }], 0);
+      }
+    });
+  });
+
+  // Thumbnail strip clicks — open lightbox at that index
+  document.querySelectorAll('.tl-strip-item').forEach(thumb => {
+    thumb.addEventListener('click', e => {
+      e.stopPropagation();
+      const idx  = parseInt(thumb.dataset.tlIdx, 10);
+      const card = thumb.closest('.project-card[data-gallery]');
+      if (!card) return;
+      const images = card.dataset.gallery.split(',').map(s => ({ src: s.trim(), alt: card.dataset.title || '' }));
+      openGlbGallery(images, idx);
+    });
+  });
+
   // ---- TESTIMONIAL SLIDER ----
   const cards = document.querySelectorAll('.testimonial-card');
   const dots  = document.querySelectorAll('.t-dot');
@@ -291,9 +319,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const graphicItems = Array.from(document.querySelectorAll('.graphic-item'));
   let glbIndex = 0;
 
+  // tempGallery: used when lightbox is driven by a custom image array (e.g. Film Timelines)
+  let tempGallery = null;
+  let tempGalleryIdx = 0;
+
+  function showGlbImage(src, alt, counter) {
+    glbImg.style.opacity = '0';
+    setTimeout(() => {
+      glbImg.src = src;
+      glbImg.alt = alt;
+      glbImg.style.opacity = '1';
+    }, 150);
+    glbCounter.textContent = counter;
+  }
+
   function openGlb(idx) {
+    tempGallery = null;
     glbIndex = idx;
-    updateGlb();
+    const item = graphicItems[glbIndex];
+    const img  = item.querySelector('img');
+    showGlbImage(img.src, img.alt, (glbIndex + 1) + ' / ' + graphicItems.length);
+    glbPrev.style.visibility = '';
+    glbNext.style.visibility = '';
+    glb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function openGlbGallery(images, startIdx) {
+    tempGallery = images;   // [{src, alt}, …]
+    tempGalleryIdx = startIdx;
+    const img = tempGallery[tempGalleryIdx];
+    showGlbImage(img.src, img.alt, (tempGalleryIdx + 1) + ' / ' + tempGallery.length);
+    glbPrev.style.visibility = tempGallery.length > 1 ? '' : 'hidden';
+    glbNext.style.visibility = tempGallery.length > 1 ? '' : 'hidden';
     glb.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -301,18 +359,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeGlb() {
     glb.classList.remove('open');
     document.body.style.overflow = '';
-  }
-
-  function updateGlb() {
-    const item = graphicItems[glbIndex];
-    const img  = item.querySelector('img');
-    glbImg.style.opacity = '0';
-    setTimeout(() => {
-      glbImg.src = img.src;
-      glbImg.alt = img.alt;
-      glbImg.style.opacity = '1';
-    }, 150);
-    glbCounter.textContent = (glbIndex + 1) + ' / ' + graphicItems.length;
+    glbPrev.style.visibility = '';
+    glbNext.style.visibility = '';
+    tempGallery = null;
   }
 
   graphicItems.forEach(item => {
@@ -323,19 +372,44 @@ document.addEventListener('DOMContentLoaded', () => {
   glbBackdrop?.addEventListener('click', closeGlb);
 
   glbPrev?.addEventListener('click', () => {
-    glbIndex = (glbIndex - 1 + graphicItems.length) % graphicItems.length;
-    updateGlb();
+    if (tempGallery) {
+      tempGalleryIdx = (tempGalleryIdx - 1 + tempGallery.length) % tempGallery.length;
+      const img = tempGallery[tempGalleryIdx];
+      showGlbImage(img.src, img.alt, (tempGalleryIdx + 1) + ' / ' + tempGallery.length);
+      syncTlStrip(tempGalleryIdx);
+    } else {
+      glbIndex = (glbIndex - 1 + graphicItems.length) % graphicItems.length;
+      const item = graphicItems[glbIndex]; const i = item.querySelector('img');
+      showGlbImage(i.src, i.alt, (glbIndex + 1) + ' / ' + graphicItems.length);
+    }
   });
   glbNext?.addEventListener('click', () => {
-    glbIndex = (glbIndex + 1) % graphicItems.length;
-    updateGlb();
+    if (tempGallery) {
+      tempGalleryIdx = (tempGalleryIdx + 1) % tempGallery.length;
+      const img = tempGallery[tempGalleryIdx];
+      showGlbImage(img.src, img.alt, (tempGalleryIdx + 1) + ' / ' + tempGallery.length);
+      syncTlStrip(tempGalleryIdx);
+    } else {
+      glbIndex = (glbIndex + 1) % graphicItems.length;
+      const item = graphicItems[glbIndex]; const i = item.querySelector('img');
+      showGlbImage(i.src, i.alt, (glbIndex + 1) + ' / ' + graphicItems.length);
+    }
   });
 
   document.addEventListener('keydown', e => {
     if (!glb.classList.contains('open')) return;
-    if (e.key === 'ArrowLeft')  { glbIndex = (glbIndex - 1 + graphicItems.length) % graphicItems.length; updateGlb(); }
-    if (e.key === 'ArrowRight') { glbIndex = (glbIndex + 1) % graphicItems.length; updateGlb(); }
+    if (e.key === 'ArrowLeft')  glbPrev?.click();
+    if (e.key === 'ArrowRight') glbNext?.click();
   });
+
+  // Sync the thumbnail strip active state when navigating inside lightbox
+  function syncTlStrip(idx) {
+    document.querySelectorAll('.tl-strip-item').forEach((el, i) => {
+      el.classList.toggle('tl-active', i === idx);
+    });
+    const mainThumb = document.querySelector('.tl-main-thumb');
+    if (mainThumb && tempGallery) mainThumb.src = tempGallery[idx].src;
+  }
 
   // extend cursor hover to graphic items
   document.querySelectorAll('.graphic-item, .graphic-zoom').forEach(el => {
